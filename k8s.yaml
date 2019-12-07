@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: hi1280/myapp
+          image: hi1280/myapp:0.0.4
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

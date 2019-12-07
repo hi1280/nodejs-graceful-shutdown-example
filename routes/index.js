@@ -10,4 +10,8 @@ router.get('/', async function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/healthz', function(req, res, next) {
+  res.status(200).end();
+});
+
 module.exports = router;

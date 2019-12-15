@@ -89,21 +89,3 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-function beforeShutdown () {
-  // given your readiness probes run every 5 second
-  // may be worth using a bigger number so you won't
-  // run into any race conditions
-  return new Promise(resolve => {
-    setTimeout(resolve, 5000)
-  })
-}
-
-function onShutdown () {
-  console.log('cleanup finished, server is shutting down');
-}
-
-createTerminus(server, {
-  beforeShutdown,
-  onShutdown
-});

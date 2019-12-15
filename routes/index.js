@@ -6,7 +6,7 @@ function timeout(ms) {
 }
 
 router.get('/', async function(req, res, next) {
-  await timeout(5000);
+  await timeout(500);
   res.send('respond with a resource');
 });
 

@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yml
+    kompose.version: 1.19.0 ()
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 3
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ../docker-compose.yml
+        kompose.version: 1.19.0 ()
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      shareProcessNamespace: true
+      containers:
+      - env:
+        - name: MYSQL_HOST
+          value: db
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: NODE_ENV
+          value: production
+        image: hi1280/myapp:0.1
+        imagePullPolicy: IfNotPresent
+        name: app
+        ports:
+        - containerPort: 3000
+        resources: {}
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 20"]
+      restartPolicy: Always
+status: {}

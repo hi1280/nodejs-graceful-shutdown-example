@@ -1,13 +1,20 @@
 var express = require('express');
 var router = express.Router();
+var mysql      = require('mysql');
+var pool = mysql.createPool({
+  connectionLimit: 10,
+  host     : process.env.MYSQL_HOST || 'db',
+  port     : process.env.MYSQL_PORT || 3306,
+  user     : 'root',
+  password : 'root',
+  database : 'world'
+});
 
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-router.get('/', async function(req, res, next) {
-  await timeout(5000);
-  res.send('respond with a resource');
+router.get('/', function(req, res, next) {
+  pool.query('select Name from country order by name', function (error, results) {
+    if (error) throw error;
+    res.send(results);
+  });
 });
 
 router.get('/healthz', function(req, res, next) {

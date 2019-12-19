@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
